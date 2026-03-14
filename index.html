@@ -83,8 +83,14 @@ img{max-width:100%;display:block}
 .content{max-width:860px;margin:0 auto;padding:40px 32px 80px}
 
 /* ── HERO ── */
-.hero{text-align:center;padding:60px 0 48px;position:relative}
-.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(99,102,241,.12) 0%,transparent 70%);pointer-events:none}
+.hero{text-align:center;padding:60px 0 48px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(99,102,241,.12) 0%,transparent 70%);pointer-events:none;z-index:2}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.15;filter:blur(1px)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--bg-primary) 0%,rgba(15,15,23,.6) 40%,rgba(15,15,23,.85) 70%,var(--bg-primary) 100%)}
+[data-theme="light"] .hero-bg img{opacity:.1}
+[data-theme="light"] .hero-bg::after{background:linear-gradient(180deg,var(--bg-primary) 0%,rgba(248,249,252,.6) 40%,rgba(248,249,252,.85) 70%,var(--bg-primary) 100%)}
+.hero>*:not(.hero-bg){position:relative;z-index:1}
 .hero h1{font-size:clamp(28px,4vw,42px);font-weight:800;margin-bottom:12px;position:relative}
 .hero h1 span{background:linear-gradient(135deg,var(--accent-light),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero p{font-size:17px;color:var(--text-secondary);max-width:540px;margin:0 auto 24px}
@@ -130,7 +136,9 @@ strong{color:var(--text-primary);font-weight:600}
 .agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:24px}
 .agent-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);transition:all .2s}
 .agent-item:hover{border-color:var(--accent);transform:translateY(-1px)}
-.agent-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:var(--font-mono);flex-shrink:0;color:#fff}
+.agent-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:var(--font-mono);flex-shrink:0;color:#fff;overflow:hidden;position:relative}
+.agent-avatar img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.agent-avatar .avatar-fallback{position:relative;z-index:1}
 .agent-info{flex:1;min-width:0}
 .agent-info h5{font-size:13px;font-weight:600;margin:0 0 2px;color:var(--text-primary);font-family:var(--font-heading)}
 .agent-info span{font-size:11.5px;color:var(--text-muted)}
@@ -174,6 +182,23 @@ pre code{color:var(--text-primary)}
 .endpoint-body{padding:16px;border-top:1px solid var(--border);display:none}
 .endpoint.open .endpoint-body{display:block}
 .endpoint.open .endpoint-header{border-bottom:1px solid var(--border)}
+
+/* ── SECTION IMAGE BANNER ── */
+.section-img-banner{position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;height:200px}
+.section-img-banner img{width:100%;height:100%;object-fit:cover}
+.section-img-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,15,23,.75),rgba(15,15,23,.5))}
+[data-theme="light"] .section-img-banner::after{background:linear-gradient(135deg,rgba(248,249,252,.75),rgba(248,249,252,.5))}
+.section-img-banner.short{height:140px}
+
+/* ── ARCHITECTURE IMAGES ── */
+.arch-images{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.arch-img-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;height:180px;border:1px solid var(--border)}
+.arch-img-card img{width:100%;height:100%;object-fit:cover}
+.arch-img-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(15,15,23,.85) 100%)}
+[data-theme="light"] .arch-img-card::after{background:linear-gradient(180deg,transparent 30%,rgba(248,249,252,.85) 100%)}
+.arch-img-card .arch-label{position:absolute;bottom:12px;left:14px;z-index:1;font-size:13px;font-weight:600;color:#fff;font-family:var(--font-heading)}
+[data-theme="light"] .arch-img-card .arch-label{color:var(--text-primary)}
+@media(max-width:768px){.arch-images{grid-template-columns:1fr}.section-img-banner{height:140px}}
 
 /* ── DIAGRAM ── */
 .diagram{background:var(--bg-code);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;font-family:var(--font-mono);font-size:13px;line-height:1.8;overflow-x:auto;white-space:pre;color:var(--text-secondary)}
@@ -356,6 +381,9 @@ pre code{color:var(--text-primary)}
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero" id="visao-geral">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&q=80" alt="Code on screen" loading="lazy">
+  </div>
   <h1><span>Sentinel Agents</span><br>Documentacao Completa</h1>
   <p>Plataforma de orquestracao de agentes IA com 16 agentes especializados, execucao via Claude Code CLI, pipelines sequenciais e sistema de revisao automatica.</p>
   <div class="hero-badges">
@@ -420,6 +448,17 @@ npm run dev</code></pre>
 
   <p>O Sentinel Agents opera em um unico container Docker contendo o servidor Express, WebSocket, sistema de persistencia JSON e o CLI Claude Code como subprocesso.</p>
 
+  <div class="arch-images">
+    <div class="arch-img-card">
+      <img src="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=800&q=80" alt="Docker containers" loading="lazy">
+      <span class="arch-label">Docker Container</span>
+    </div>
+    <div class="arch-img-card">
+      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80" alt="Server infrastructure" loading="lazy">
+      <span class="arch-label">Infraestrutura</span>
+    </div>
+  </div>
+
   <div class="diagram"><span class="label">                   Navegador (SPA Vanilla JS)</span>
                         <span class="arrow">|</span>
                <span class="arrow">HTTP REST + WebSocket (ws)</span>
@@ -471,22 +510,22 @@ npm run dev</code></pre>
   <p>Cada agente possui um system prompt especializado, modelo configuravel (padrao: <code>claude-sonnet-4-6</code>), modo de permissao e secrets individuais.</p>
 
   <div class="agent-grid">
-    <div class="agent-item"><div class="agent-avatar" style="background:#6366f1">J</div><div class="agent-info"><h5>Jarvis</h5><span>Chief Orchestrator -- coordena todos os agentes</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#ec4899">B</div><div class="agent-info"><h5>Beatrix</h5><span>PO/CFO -- gestao de produto e financeiro</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#8b5cf6">D</div><div class="agent-info"><h5>DaVinci</h5><span>Tech Lead/CEO -- lideranca tecnica</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#3b82f6">Py</div><div class="agent-info"><h5>Pythia</h5><span>Python -- backend, scripts, automacao</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#06b6d4">R</div><div class="agent-info"><h5>Reacto</h5><span>Elite UI/UX -- frontend premium</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#f97316">JM</div><div class="agent-info"><h5>JavaMax</h5><span>Java -- backends enterprise, Spring</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#22c55e">NN</div><div class="agent-info"><h5>NodeNinja</h5><span>Full-Stack JS -- Node.js, Express, React</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#ef4444">S</div><div class="agent-info"><h5>Shield</h5><span>QA/CISO -- qualidade e seguranca</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#64748b">Sc</div><div class="agent-info"><h5>Scribe</h5><span>Docs -- documentacao tecnica</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#a855f7">T</div><div class="agent-info"><h5>Terraform</h5><span>IaC/DevOps -- infra como codigo</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#f59e0b">CA</div><div class="agent-info"><h5>CloudAWS</h5><span>AWS -- servicos e otimizacao AWS</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#0ea5e9">AZ</div><div class="agent-info"><h5>CloudAzure</h5><span>Azure -- servicos Microsoft Cloud</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#14b8a6">K</div><div class="agent-info"><h5>KubeOps</h5><span>Kubernetes -- orquestracao de containers</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#f43f5e">N</div><div class="agent-info"><h5>Nexus</h5><span>Sales -- vendas e estrategia comercial</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#7c3aed">Ne</div><div class="agent-info"><h5>Neuron</h5><span>ML -- machine learning e IA</span></div></div>
-    <div class="agent-item"><div class="agent-avatar" style="background:#0d9488">L</div><div class="agent-info"><h5>Lexicon</h5><span>Prompt Eng -- engenharia de prompts</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#6366f1"><img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=100&h=100&fit=crop" alt="Jarvis" loading="lazy"><span class="avatar-fallback">J</span></div><div class="agent-info"><h5>Jarvis</h5><span>Chief Orchestrator -- coordena todos os agentes</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#ec4899"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop" alt="Beatrix" loading="lazy"><span class="avatar-fallback">B</span></div><div class="agent-info"><h5>Beatrix</h5><span>PO/CFO -- gestao de produto e financeiro</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#8b5cf6"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="DaVinci" loading="lazy"><span class="avatar-fallback">D</span></div><div class="agent-info"><h5>DaVinci</h5><span>Tech Lead/CEO -- lideranca tecnica</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#3b82f6"><img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=100&h=100&fit=crop" alt="Pythia" loading="lazy"><span class="avatar-fallback">Py</span></div><div class="agent-info"><h5>Pythia</h5><span>Python -- backend, scripts, automacao</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#06b6d4"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=100&h=100&fit=crop" alt="Reacto" loading="lazy"><span class="avatar-fallback">R</span></div><div class="agent-info"><h5>Reacto</h5><span>Elite UI/UX -- frontend premium</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#f97316"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=100&h=100&fit=crop" alt="JavaMax" loading="lazy"><span class="avatar-fallback">JM</span></div><div class="agent-info"><h5>JavaMax</h5><span>Java -- backends enterprise, Spring</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#22c55e"><img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=100&h=100&fit=crop" alt="NodeNinja" loading="lazy"><span class="avatar-fallback">NN</span></div><div class="agent-info"><h5>NodeNinja</h5><span>Full-Stack JS -- Node.js, Express, React</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#ef4444"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=100&h=100&fit=crop" alt="Shield" loading="lazy"><span class="avatar-fallback">S</span></div><div class="agent-info"><h5>Shield</h5><span>QA/CISO -- qualidade e seguranca</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#64748b"><img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=100&h=100&fit=crop" alt="Scribe" loading="lazy"><span class="avatar-fallback">Sc</span></div><div class="agent-info"><h5>Scribe</h5><span>Docs -- documentacao tecnica</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#a855f7"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=100&h=100&fit=crop" alt="Terraform" loading="lazy"><span class="avatar-fallback">T</span></div><div class="agent-info"><h5>Terraform</h5><span>IaC/DevOps -- infra como codigo</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#f59e0b"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop" alt="CloudAWS" loading="lazy"><span class="avatar-fallback">CA</span></div><div class="agent-info"><h5>CloudAWS</h5><span>AWS -- servicos e otimizacao AWS</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#0ea5e9"><img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=100&h=100&fit=crop" alt="CloudAzure" loading="lazy"><span class="avatar-fallback">AZ</span></div><div class="agent-info"><h5>CloudAzure</h5><span>Azure -- servicos Microsoft Cloud</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#14b8a6"><img src="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=100&h=100&fit=crop" alt="KubeOps" loading="lazy"><span class="avatar-fallback">K</span></div><div class="agent-info"><h5>KubeOps</h5><span>Kubernetes -- orquestracao de containers</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#f43f5e"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop" alt="Nexus" loading="lazy"><span class="avatar-fallback">N</span></div><div class="agent-info"><h5>Nexus</h5><span>Sales -- vendas e estrategia comercial</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#7c3aed"><img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=100&h=100&fit=crop" alt="Neuron" loading="lazy"><span class="avatar-fallback">Ne</span></div><div class="agent-info"><h5>Neuron</h5><span>ML -- machine learning e IA</span></div></div>
+    <div class="agent-item"><div class="agent-avatar" style="background:#0d9488"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100&h=100&fit=crop" alt="Lexicon" loading="lazy"><span class="avatar-fallback">L</span></div><div class="agent-info"><h5>Lexicon</h5><span>Prompt Eng -- engenharia de prompts</span></div></div>
   </div>
 
   <div class="callout info">
@@ -557,6 +596,10 @@ npm run dev</code></pre>
     <i data-lucide="key-round"></i>
     <h2>API -- Autenticacao</h2>
     <a href="#api-auth" class="section-anchor">#</a>
+  </div>
+
+  <div class="section-img-banner short">
+    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80" alt="Code editor" loading="lazy">
   </div>
 
   <p>Toda requisicao (exceto webhooks publicos) requer um token JWT no header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
@@ -1150,6 +1193,10 @@ curl <span class="op">-X</span> POST https://sentinel-agents.com.br/hook/<span c
 
   <p>O fluxo Kanban controla o ciclo de vida de cada tarefa executada pelos agentes, desde a preparacao ate a finalizacao.</p>
 
+  <div class="section-img-banner short">
+    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&q=80" alt="Kanban board" loading="lazy">
+  </div>
+
   <div class="kanban-flow">
     <div class="kanban-step">Preparacao</div>
     <div class="kanban-arrow"><i data-lucide="chevron-right" style="width:16px;height:16px"></i></div>
@@ -1204,6 +1251,10 @@ curl <span class="op">-X</span> POST https://sentinel-agents.com.br/hook/<span c
     <i data-lucide="rocket"></i>
     <h2>Guia de Deploy</h2>
     <a href="#deploy" class="section-anchor">#</a>
+  </div>
+
+  <div class="section-img-banner">
+    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80" alt="Data center globe" loading="lazy">
   </div>
 
   <h3><i data-lucide="container"></i> Docker Setup</h3>
